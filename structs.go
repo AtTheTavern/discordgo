@@ -974,6 +974,14 @@ func (p GuildScheduledEventParams) MarshalJSON() ([]byte, error) {
 			guildScheduledEventParams: guildScheduledEventParams(p),
 			ChannelID:                 json.RawMessage("null"),
 		})
+	} else if p.EntityType != GuildScheduledEventEntityTypeExternal && p.EntityMetadata == nil {
+		return Marshal(struct {
+			guildScheduledEventParams
+			EntityMetadata json.RawMessage `json:"entity_metadata"`
+		}{
+			guildScheduledEventParams: guildScheduledEventParams(p),
+			EntityMetadata:            json.RawMessage("null"),
+		})
 	}
 
 	return Marshal(guildScheduledEventParams(p))
