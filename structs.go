@@ -886,6 +886,14 @@ func (p GuildScheduledEventParams) MarshalJSON() ([]byte, error) {
 			guildScheduledEventParams: guildScheduledEventParams(p),
 			ChannelID:                 json.RawMessage("null"),
 		})
+	} else if p.EntityType != GuildScheduledEventEntityTypeExternal && p.EntityMetadata == nil {
+		return Marshal(struct {
+			guildScheduledEventParams
+			EntityMetadata json.RawMessage `json:"entity_metadata"`
+		}{
+			guildScheduledEventParams: guildScheduledEventParams(p),
+			EntityMetadata:            json.RawMessage("null"),
+		})
 	}
 
 	return Marshal(guildScheduledEventParams(p))
@@ -1249,9 +1257,10 @@ func (m *Member) Mention() string {
 }
 
 // AvatarURL returns the URL of the member's avatar
-//    size:    The size of the user's avatar as a power of two
-//             if size is an empty string, no size parameter will
-//             be added to the URL.
+//
+//	size:    The size of the user's avatar as a power of two
+//	         if size is an empty string, no size parameter will
+//	         be added to the URL.
 func (m *Member) AvatarURL(size string) string {
 	if m.Avatar == "" {
 		return m.User.AvatarURL(size)
