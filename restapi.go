@@ -3383,3 +3383,93 @@ func (s *Session) UserApplicationRoleConnectionUpdate(appID string, rconn *Appli
 	err = unmarshal(body, &st)
 	return
 }
+
+// ----------------------------------------------------------------------
+// Functions specific to application SKUs
+// ----------------------------------------------------------------------
+
+// ApplicationSKUs returns a list of SKUs for a given application.
+// applicationID : ID of the application
+func (s *Session) ApplicationSKUs(applicationID string) (skus []*ApplicationSKU, err error) {
+	endpoint := EndpointApplicationSKUs(applicationID)
+
+	var body []byte
+	body, err = s.RequestWithBucketID("GET", endpoint, nil, endpoint)
+	if err != nil {
+		return
+	}
+
+	fmt.Println(string(body))
+
+	err = unmarshal(body, &skus)
+	return
+}
+
+// ----------------------------------------------------------------------
+// Functions specific to application entitlements
+// ----------------------------------------------------------------------
+
+// ApplicationEntitlements returns a list of Entitlements for a given application.
+// applicationID : ID of the application
+func (s *Session) ApplicationEntitlements(applicationID string) (entitlements []*ApplicationEntitlement, err error) {
+	endpoint := EndpointApplicationEntitlements(applicationID)
+
+	var body []byte
+	body, err = s.RequestWithBucketID("GET", endpoint, nil, endpoint)
+	if err != nil {
+		return
+	}
+
+	err = unmarshal(body, &entitlements)
+	return
+}
+
+// ApplicationEntitlement returns an Entitlement for a given application.
+// applicationID : ID of the application
+// entitlementID : ID of the entitlement
+func (s *Session) ApplicationEntitlement(applicationID, entitlementID string) (entitlement *ApplicationEntitlement, err error) {
+	endpoint := EndpointApplicationEntitlement(applicationID, entitlementID)
+
+	var body []byte
+	body, err = s.RequestWithBucketID("GET", endpoint, nil, endpoint)
+	if err != nil {
+		return
+	}
+
+	err = unmarshal(body, &entitlement)
+	return
+}
+
+// ApplicationEntitlementCreate creates a test ApplicationEntitlement for a given guild
+// applicationID : ID of the application
+// guildID       : ID of a Guild
+// skuID         : ID of the SKU to grant
+func (s *Session) ApplicationEntitlementCreate(applicationID, guildID, skuID string) (entitlement *ApplicationEntitlement, err error) {
+	endpoint := EndpointApplicationEntitlements(applicationID)
+
+	data := struct {
+		SKUID   string `json:"sku_id"`
+		OwnerID string `json:"owner_id"`
+	}{
+		SKUID:   skuID,
+		OwnerID: guildID,
+	}
+
+	var body []byte
+	body, err = s.RequestWithBucketID("POST", endpoint, data, endpoint)
+	if err != nil {
+		return
+	}
+
+	err = unmarshal(body, &entitlement)
+	return
+}
+
+// ApplicationEntitlementsDelete removes a test entitlement (does not work for real entitlements) for a given application.
+// applicationID : ID of the application
+// entitlementID : ID of the entitlement
+func (s *Session) ApplicationEntitlementsDelete(applicationID, entitlementID string) (err error) {
+	endpoint := EndpointApplicationEntitlement(applicationID, entitlementID)
+	_, err = s.RequestWithBucketID("DELETE", endpoint, nil, endpoint)
+	return
+}

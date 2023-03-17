@@ -2096,6 +2096,57 @@ const (
 	StageInstancePrivacyLevelGuildOnly StageInstancePrivacyLevel = 2
 )
 
+type ApplicationSKU struct {
+	ID             string   `json:"id"`
+	Type           int      `json:"type"` // TODO
+	DependentSKUID string   `json:"dependent_sku_id"`
+	ApplicationID  string   `json:"application_id"`
+	ManifestLabels []string `json:"manifest_labels"`
+	Name           string   `json:"name"`
+	AccessType     int      `json:"access_type"` // TODO
+	Features       []int    `json:"features"`    // TODO
+	// SystemRequirements  `json:"system_requirements"` // TODO
+	// ContentRatings  `json:"content_ratings"` // TODO
+	ReleaseDate time.Time `json:"release_date"`
+	// LegalNotice  `json:"legal_notice"` // TODO
+	PriceTier int `json:"price_tier"`
+	// Price  `json:"price"` // TODO
+	Premium bool     `json:"premium"`
+	Locales []string `json:"locales"`
+	// BundledSKUs  `json:"bundled_skus"` // TODO
+
+	// Fields found in SKU response, but not in documentation
+	Slug        string `json:"slug"`
+	Flags       int    `json:"flags"`
+	ShowAgeGate bool   `json:"show_age_gate"`
+}
+
+// ApplicationEntitlement holds information about an application entitlement.
+type ApplicationEntitlement struct {
+	ID            string          `json:"id"`
+	SKUID         string          `json:"sku_id"`
+	ApplicationID string          `json:"application_id"`
+	UserID        string          `json:"user_id"`
+	PromotionID   string          `json:"promotion_id"`
+	GuildID       string          `json:"guild_id"`
+	Type          EntitlementType `json:"type"`
+	Deleted       bool            `json:"deleted"`
+	GiftCodeFlags int             `json:"gift_code_flags"`
+	Consumed      bool            `json:"consumed"`
+
+	// Following fields may not be provided if this is a test entitlement
+	StartsAt       time.Time `json:"starts_at"`
+	EndsAt         time.Time `json:"ends_at"`
+	SubscriptionID string    `json:"subscription_id"`
+}
+
+// EntitlementType represents the type of entitlement of an application entitlement instance
+type EntitlementType int
+
+const (
+	EntitlementTypeUnknown EntitlementType = 8 // FIXME - Need to get docs on these types
+)
+
 // Constants for the different bit offsets of text channel permissions
 const (
 	// Deprecated: PermissionReadMessages has been replaced with PermissionViewChannel for text and voice channels
