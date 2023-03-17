@@ -197,8 +197,11 @@ var (
 	EndpointEmoji         = func(eID string) string { return EndpointCDN + "emojis/" + eID + ".png" }
 	EndpointEmojiAnimated = func(eID string) string { return EndpointCDN + "emojis/" + eID + ".gif" }
 
-	EndpointApplications = EndpointAPI + "applications"
-	EndpointApplication  = func(aID string) string { return EndpointApplications + "/" + aID }
+	EndpointApplications            = EndpointAPI + "applications"
+	EndpointApplication             = func(aID string) string { return EndpointApplications + "/" + aID }
+	EndpointApplicationSKUs         = func(aID string) string { return EndpointApplications + "/" + aID + "/skus" }
+	EndpointApplicationEntitlements = func(aID string) string { return EndpointApplications + "/" + aID + "/entitlements" }
+	EndpointApplicationEntitlement  = func(aID, eID string) string { return EndpointApplications + "/" + aID + "/entitlements/" + eID }
 
 	EndpointOAuth2                  = EndpointAPI + "oauth2/"
 	EndpointOAuth2Applications      = EndpointOAuth2 + "applications"
