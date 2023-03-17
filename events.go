@@ -401,3 +401,18 @@ type AutoModerationActionExecution struct {
 	MatchedKeyword       string                        `json:"matched_keyword"`
 	MatchedContent       string                        `json:"matched_content"`
 }
+
+// EntitlementCreate is the data for a EntitlementCreate event.
+type EntitlementCreate struct {
+	*ApplicationEntitlement
+}
+
+// EntitlementDelete is the data for a EntitlementDelete event.
+type EntitlementDelete struct {
+	*ApplicationEntitlement
+}
+
+// EntitlementUpdate is the data for a EntitlementUpdate event.
+type EntitlementUpdate struct {
+	*ApplicationEntitlement
+}
