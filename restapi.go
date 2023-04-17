@@ -3444,15 +3444,17 @@ func (s *Session) ApplicationEntitlement(applicationID, entitlementID string) (e
 // applicationID : ID of the application
 // guildID       : ID of a Guild
 // skuID         : ID of the SKU to grant
-func (s *Session) ApplicationEntitlementCreate(applicationID, guildID, skuID string) (entitlement *ApplicationEntitlement, err error) {
+func (s *Session) ApplicationEntitlementCreate(applicationID, guildID, skuID string, ownerType EntitlementOwnerType) (entitlement *ApplicationEntitlement, err error) {
 	endpoint := EndpointApplicationEntitlements(applicationID)
 
 	data := struct {
-		SKUID   string `json:"sku_id"`
-		OwnerID string `json:"owner_id"`
+		SKUID     string `json:"sku_id"`
+		OwnerID   string `json:"owner_id"`
+		OwnerType int    `json:"owner_type"`
 	}{
-		SKUID:   skuID,
-		OwnerID: guildID,
+		SKUID:     skuID,
+		OwnerID:   guildID,
+		OwnerType: int(ownerType),
 	}
 
 	var body []byte

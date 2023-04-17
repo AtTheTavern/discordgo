@@ -2147,6 +2147,14 @@ const (
 	EntitlementTypeUnknown EntitlementType = 8 // FIXME - Need to get docs on these types
 )
 
+// EntitlementOwnerType represents the type of owner of an application entitlement instance
+type EntitlementOwnerType int
+
+const (
+	EntitlementOwnerTypeServer EntitlementOwnerType = 1
+	EntitlementOwnerTypeUser   EntitlementOwnerType = 2
+)
+
 // Constants for the different bit offsets of text channel permissions
 const (
 	// Deprecated: PermissionReadMessages has been replaced with PermissionViewChannel for text and voice channels
